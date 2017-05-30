@@ -11,7 +11,7 @@ string toUpper(const string& symbols)
 			newString[i] += (-'a' + 'A');
 	return newString;
 }
-string currency(double number, const string& symbol)
+string currency(double number, const char* symbol)
 {
 	string newString;
 	string num = to_string(number);
@@ -19,8 +19,14 @@ string currency(double number, const string& symbol)
 	num = num.substr(0, i + 3);
 	newString.append(num);
 	newString.append(" ");
-	newString.append(toUpper(symbol));
-	cout << newString << endl;
+	if(symbol == "usd" || symbol == "USD")
+		newString.append("$"); 
+	else if(symbol == "bgn" || symbol == "BGN") 
+		newString.append("lv");
+	else if (symbol == "eur" || symbol == "EUR")
+		newString.append("ˆ"); 
+	else
+		newString.append(toUpper(symbol));
 	return newString;
 }
 string currency(const string& symbol, double number)
@@ -31,8 +37,14 @@ string currency(const string& symbol, double number)
 	num = num.substr(0, i + 3);
 	newString.append(num);
 	newString.append(" ");
-	newString.append(toUpper(symbol));
-	cout << newString << endl;
+	if (symbol == "usd" || symbol == "USD")
+		newString.append("$");
+	else if (symbol == "bgn" || symbol == "BGN")
+		newString.append("lv");
+	else if (symbol == "eur" || symbol == "EUR")
+		newString.append("ˆ");
+	else
+		newString.append(toUpper(symbol));
 	return newString;
 }
 
@@ -60,13 +72,16 @@ double roundDouble(double number, int pos)
 {
 	if (pos >= 0)
 	{
-		int num = (int)number / pow(10, pos);
+		int num = (int)number / pow(10, pos-1);
+		num += 5;
+		num /= 10;
 		return (double)num;
 	}
 	else
 	{
 		double num = number;
 		num *= pow(10, -pos);
+		num += 0.5;
 		num = (int)num;
 		num = (double)num;
 		num /= pow(10, -pos);
@@ -85,117 +100,54 @@ string divideWithReminder(int devisible, int devisor)
 	return ans;
 }
 
-//problem #5 ?
+//problem #5 
+int random(int obj) // picking random object < T (operator<)
+{
+	srand(time(NULL));
+	return rand() % obj;
+}
+char random(char obj) // picking random object < T (operator<)
+{
+	srand(time(NULL));
+	return (char)(rand() % obj)	;
+}
+vector<int> random(vector<int> arr) // picking random object/objects from arr, max length = int
+{
+	if (arr.empty())
+		return arr;
+	unsigned int size = arr.size();
+	srand(time(NULL));
+	int index1 = rand() % size, index2 = index1 + rand() % (size - index1);
+	vector<int> toReturn;
+	for (unsigned int i = index1; i < size; i++)
+		toReturn.push_back(arr[i]);
+	return toReturn;
+}
+template <class T>
+vector<T> randomShuffle(vector<T> arr)
+{
+	unsigned int size = arr.size();
+	srand(time(NULL));
+	vector<T> toReturn;
+	vector<int> indexes;
+	unsigned int elementsReady = 0;
+	for (unsigned int i = rand() % size; elementsReady<size; i = rand()%size;)
+	{
+		bool find = false;
+		for (unsigned int j = 0; j < indexes.size(); j++)
+			if (j == indexes[i])
+			{
+				find = true;
+				elementsReady++;
+			}
+		if(!find)
+			indexes.push_back(i);
+	}
+	for (unsigned int i = 0; i < size; i++)
+		toReturn.push_back(arr[indexes[i]]);
+	return toReturn;
+}
 
-////NOT problem #6
-//WINNER evaluateHands(const Cards& first, const Cards& second)
-//{
-//	//2, 2+2, 3, straight, flush, 3+2, 4, straight flush;
-//	if (first > second)
-//		return FIRST;
-//	if (first < second)
-//		return SECOND;
-//	return NOBODY;
-//}
-
-
-//{
-//	int first[13], second[13];
-//	bool firstSuits = true, secondSuits = true;
-//	for (int i = 0; i < 13; i++)
-//	{
-//		first[i] = 0;
-//		second[i] = 0;
-//	}
-//	for (unsigned int i = 0; i < cards.size(); i++)
-//	{
-//		if (cards[i].getSuit() != cards[0].getSuit())
-//			firstSuits = false;
-//		if (other.cards[i].getSuit() != other.cards[0].getSuit())
-//			firstSuits = false;
-//		first[cards[i].getNumber() - 1]++;
-//		second[other.cards[i].getNumber() - 1]++;
-//	}
-//	int combinationFirst = 0, combinationSecond = 0;
-//	//combinations 0 - high card, 1 - pair, 2 - 2 pairs, 3 - three of a kind
-//	//	4 - strait, 5 - flush, 6 - full house, 7 - four of a kind, 8 - straight flush
-//	for (int i = 0; i < 13; i++)
-//	{
-//		if (first[i] == 2)
-//			combinationFirst = 1;
-//		if (second[i] == 2)
-//			combinationSecond = 1;
-//		if (first[i] == 3)
-//			combinationFirst = 3;
-//		if (second[i] == 3)
-//			combinationSecond = 3;
-//		if (first[i] == 4)
-//			combinationFirst = 7;
-//		if (second[i] == 4)
-//			combinationSecond = 7;
-//	}
-//	for (int i = 0; i < 9; i++)
-//	{
-//		if (first[i] == first[i + 1] == first[i + 2] == first[i + 3] == first[i + 4] == 1)
-//			combinationFirst = combinationFirst > 4 ? combinationFirst : 4;
-//		if (second[i] == second[i + 1] == second[i + 2] == second[i + 3] == second[i + 4] == 1)
-//			combinationSecond = combinationSecond > 4 ? combinationSecond : 4;
-//	}
-//	if (firstSuits)
-//	{
-//		if (combinationFirst == 4)
-//			combinationFirst = 8;
-//		combinationFirst = combinationFirst > 5 ? combinationFirst : 5;
-//	}
-//	if (secondSuits)
-//	{
-//		if (combinationSecond == 4)
-//			combinationSecond = 8;
-//		combinationSecond = combinationSecond > 4 ? combinationSecond : 4;
-//	}
-//
-//	//2+2, 3+2 ??
-//	if (combinationFirst == 1 || combinationFirst == 3)
-//	{
-//		bool firstFind = false; //find pair or three of a kind at least
-//		for (int i = 0; i < 13; i++)
-//		{
-//			if (first[i] == 2 || first[i] == 3)
-//				firstFind = true;
-//			if (firstFind)
-//				if (first[i] == 2)
-//					if (combinationFirst == 1) // 2+2
-//						combinationFirst = 2;
-//					else
-//						combinationFirst = 6; // 3+2
-//				else
-//					combinationFirst = 6;//2+3
-//		}
-//	}
-//	if (combinationSecond == 1 || combinationSecond == 3)
-//	{
-//		bool firstFind = false; //find pair or two of a kind at least
-//		for (int i = 0; i < 13; i++)
-//		{
-//			if (second[i] == 2 || second[i] == 3)
-//				firstFind = true;
-//			if (firstFind)
-//				if (second[i] == 2)
-//					if (combinationSecond == 1) // 2+2
-//						combinationSecond = 2;
-//					else
-//						combinationSecond = 6; // 3+2
-//				else
-//					combinationSecond = 6;//2+3
-//		}
-//	}
-//
-//
-//	if (combinationFirst < combinationSecond)
-//		return true;
-//	else
-//		return false;
-//}
 //problem #6
 GAME_POKER evaluate(const Cards& other)
 {
@@ -267,9 +219,11 @@ GAME_BLACKJACK evaluate(const Cards& other, int sth)
 
 	if (sum < 21)
 		return PLAYING;
-	if (sum == 21)
+	else if (sum == 21)
 		return WIN;
-	if (sum > 21)
+	else if (sum > 21)
+		return BUST;
+	else
 		return BUST;
 	cerr << "Error - blackjack" << endl;
 }
