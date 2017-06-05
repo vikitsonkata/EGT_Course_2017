@@ -1,5 +1,6 @@
 #include "LibFunctions.h"
 #include <cmath>
+#include <algorithm>
 using std::pow;
 
 //problem #1
@@ -11,7 +12,7 @@ string toUpper(const string& symbols)
 			newString[i] += (-'a' + 'A');
 	return newString;
 }
-string currency(double number, const char* symbol)
+string currency(double number, const string& symbol)
 {
 	string newString;
 	string num = to_string(number);
@@ -90,14 +91,12 @@ double roundDouble(double number, int pos)
 }
 
 //problem #4
-string divideWithReminder(int devisible, int devisor)
+devision divideWithReminder(int devisible, int devisor)
 {
-	string ans = "";
-	ans.append("quotient: ");
-	ans.append(to_string(devisible / devisor));
-	ans.append("\treminder: ");
-	ans.append(to_string(devisible - devisible / devisor * devisor));
-	return ans;
+	devision toReturn;
+	toReturn.num = devisible / devisor;
+	toReturn.denum = devisible % devisor;
+	return toReturn;
 }
 
 //problem #5 
@@ -121,30 +120,6 @@ vector<int> random(vector<int> arr) // picking random object/objects from arr, m
 	vector<int> toReturn;
 	for (unsigned int i = index1; i < size; i++)
 		toReturn.push_back(arr[i]);
-	return toReturn;
-}
-template <class T>
-vector<T> randomShuffle(vector<T> arr)
-{
-	unsigned int size = arr.size();
-	srand(time(NULL));
-	vector<T> toReturn;
-	vector<int> indexes;
-	unsigned int elementsReady = 0;
-	for (unsigned int i = rand() % size; elementsReady<size; i = rand()%size;)
-	{
-		bool find = false;
-		for (unsigned int j = 0; j < indexes.size(); j++)
-			if (j == indexes[i])
-			{
-				find = true;
-				elementsReady++;
-			}
-		if(!find)
-			indexes.push_back(i);
-	}
-	for (unsigned int i = 0; i < size; i++)
-		toReturn.push_back(arr[indexes[i]]);
 	return toReturn;
 }
 
@@ -198,7 +173,7 @@ GAME_POKER evaluate(const Cards& other)
 	}
 	return value;
 }
-GAME_BLACKJACK evaluate(const Cards& other, int sth)
+GAME_BLACKJACK evaluate(const Cards& other, int dummy)
 {
 	int sum = 0;
 	int aces = 0;
@@ -228,6 +203,24 @@ GAME_BLACKJACK evaluate(const Cards& other, int sth)
 	cerr << "Error - blackjack" << endl;
 }
 
-//probelem #6
+//probelem #7
+//???
 
+//problem #8
+//class Complex number
+
+//problem #9
+//class Rational number
+
+//problem #10
+//class Rectangle
+
+//problem #11
+//class Rectangle :: show() //draw the rectangle
+
+//problem #12
+//class HugeInteger
+
+//problem #13
+//class IntegerSet
 

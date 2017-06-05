@@ -2,6 +2,11 @@
 #define LIBFUNCTIOS
 
 #include "Cards.h"
+#include "ComplexNumber.h"
+#include "Rational.h"
+#include "Rectangle.h"
+#include "HugeInteger.h"
+#include "IntegerSet.h"
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -9,6 +14,11 @@
 #include <time.h>
 #include <vector>
 using namespace std;
+struct devision
+{
+	int num;
+	int denum;
+};
 
 enum WINNER { FIRST = 1 , SECOND, NOBODY = 0};
 enum GAME_POKER { NO_COMBINATION, PAIR, TWO_PAIRS, THREE_OF_A_KIND,
@@ -27,7 +37,7 @@ string currency(const string& symbol, double number);
 
 double roundDouble(double number, int pos);
 
-string divideWithReminder(int, int);
+devision divideWithReminder(int, int);
 
 GAME_POKER evaluate(const Cards&);
 
@@ -36,8 +46,6 @@ GAME_BLACKJACK evaluate(const Cards&, int);
 int random(int); // picking random object 
 char random(char); // picking random object 
 vector<int> random(vector<int>); // picking random object/objects from arr, max length = int
-template <class T>
-vector<T> randomShuffle(vector<T>);
 
 
 
