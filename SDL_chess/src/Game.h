@@ -10,7 +10,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <vector>
+#include <iostream>
 using namespace std;
+
+const int BOARD_WIDTH = 800;
+const int BOARD_HEIGHT = 800;
 
 const int TEXTURE_SCREEN_WIDTH = 2000;
 const int TEXTURE_SCREEN_HEIGHT = 667;
@@ -18,7 +22,8 @@ const int TEXTURE_SCREEN_HEIGHT = 667;
 const int PIECE_WIDTH = TEXTURE_SCREEN_WIDTH / 6;
 const int PIECE_HEIGHT = TEXTURE_SCREEN_HEIGHT / 2;
 
-class Game {
+class Game
+{
 public:
 	Game();
 	virtual ~Game();
@@ -33,7 +38,7 @@ private:
 	void LoadMedia();
 	void Close();
 
-	void Crop();
+	void CropFromImage();
 	void DoRectsOnScreenGrid();
 
 	SDL_Window* window;
