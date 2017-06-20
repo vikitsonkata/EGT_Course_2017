@@ -29,7 +29,7 @@ public:
 	virtual ~Game();
 
 	void RenderBackground();
-	void RenderPiece(int = 0, int = 0);
+	void RenderPiece(const char = 'w', const char = ' ', int = 0, int = 0);
 
 	SDL_Renderer* getRenderer() const;
 

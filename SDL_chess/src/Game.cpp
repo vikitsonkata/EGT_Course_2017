@@ -42,9 +42,10 @@ void Game::LoadMedia()
 
 	pictures = SDL_CreateTextureFromSurface(renderer, surface);
 
-	SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 181, 230, 29));
+	SDL_SetColorKey(surface, SDL_TRUE,
+			SDL_MapRGB(surface->format, 181, 230, 29));
 
-	if(background == NULL || pictures == NULL)
+	if (background == NULL || pictures == NULL)
 		cerr << "Failed to load all the media!";
 	SDL_FreeSurface(surface);
 }
@@ -62,8 +63,42 @@ void Game::RenderBackground()
 	SDL_RenderCopy(renderer, background, NULL, NULL);
 }
 
-void Game::RenderPiece(int picturePos, int screenPos)
+void Game::RenderPiece(const char WhiteBlack, const char ChessFigure,
+		int screenPosX, int screenPosY)
 {
+	int picturePos(0);
+	int screenPos(8 * screenPosX + screenPosY);
+
+	if (WhiteBlack == 'b' || WhiteBlack == 'B')
+	{
+		picturePos += 6;
+		screenPos += 2 * 8 * screenPosX;
+	}
+
+	switch (ChessFigure)
+	{
+	case 'k':
+	case 'K':
+		break;
+	case 'q':
+	case 'Q':
+		picturePos += 1;
+		break;
+	case 'b':
+	case 'B':
+		picturePos += 2;
+		break;
+	case 'h':
+	case 'H':
+		picturePos += 3;
+		break;
+	case 'r':
+	case 'R':
+		picturePos += 4;
+		break;
+	default:
+		picturePos += 5;
+	}
 	SDL_RenderCopy(renderer, pictures, &possisionsFromTexture[picturePos],
 			&possisionsOnScreen[screenPos]);
 }
@@ -93,9 +128,8 @@ void Game::DoRectsOnScreenGrid()
 	{
 		for (int i = 0; i < 8; i++)
 		{
-			SDL_Rect rect = { i * BOARD_WIDTH / 8, j
-					* BOARD_HEIGHT / 8, BOARD_WIDTH / 8,
-					BOARD_HEIGHT / 8 };
+			SDL_Rect rect = { i * BOARD_WIDTH / 8, j * BOARD_HEIGHT / 8,
+					BOARD_WIDTH / 8, BOARD_HEIGHT / 8 };
 			possisionsOnScreen.push_back(rect);
 		}
 	}
